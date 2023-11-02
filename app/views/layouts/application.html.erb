@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dev admin</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+</head>
+
+<body>
+<%= render "layouts/header" %>
+
+<main class="container">
+  <p class="notice" style="margin: 0;padding:0;"><%= notice %> <br><%= alert %></p>
+
+
+  <h4>If you saw the old way</h4>
+  <% if current_user %>
+    <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete} , class: 'btn btn-outline-success'%>
+    <%= link_to 'Edit profile', edit_user_registration_path, class: 'btn btn-outline-success' %> |
+  <% else %>
+    <%= link_to "Login" , new_user_session_path,  class: 'btn btn-outline-success' %>
+    <%= link_to "Registrati" , new_user_registration_path,  class: 'btn btn-outline-success' %>
+  <% end %>
+<p>&nbsp;<hr> &nbsp;</p>
+  <h4>what you might have seen lately</h4>
+  <% if user_signed_in? %>
+    <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete} , class: 'btn btn-outline-success'%>
+    <%= link_to 'Edit profile', edit_user_registration_path, class: 'btn btn-outline-success' %>
+    <% elsif admin_signed_in? %>
+    <%= link_to 'Sign Out', destroy_admin_session_path, method: :delete, data: { turbo_method: :delete} , class: 'btn btn-outline-success'%>
+    <%= link_to 'Edit profile', edit_admin_registration_path, class: 'btn btn-outline-success' %>
+<% else %>
+    <%= link_to "Login" , new_user_session_path,  class: 'btn btn-outline-success' %>
+    <%= link_to "Registrati" , new_user_registration_path,  class: 'btn btn-outline-success' %>
+  <% end %>
+  <h4>Admin Links</h4>
+  <% if admin_signed_in? %>
+    <%= link_to 'Sign Out', destroy_admin_session_path, method: :delete, data: { turbo_method: :delete} , class: 'btn btn-outline-success'%>
+    <%= link_to 'Edit profile', edit_admin_registration_path, class: 'btn btn-outline-success' %>
+<% elsif !user_signed_in? %>
+    <%= link_to "Login" , new_admin_session_path,  class: 'btn btn-outline-success' %>
+    <%= link_to "Registrati" , new_admin_registration_path,  class: 'btn btn-outline-success' %>
+  <% end %>
+
+  <h4>Page links</h4>
+  <%= link_to "users path" , pages_users_path%>
+  <%= link_to "admin path" , pages_admin_path%>
+  <%= yield %>
+</main>
+
+</body>
+</html>
